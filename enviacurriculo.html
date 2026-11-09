@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Curriculum Vitae</title>
+    <style>
+        /* Ajustes globales según Normas APA: Márgenes de 2.54 cm */
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 2.54cm; 
+            background-color: #f4f4f4; 
+            line-height: 1.5;
+        }
+        
+        /* Contenedor estilo Hoja Bond */
+        .container { 
+            max-width: 800px; 
+            background: white; 
+            padding: 2.54cm; 
+            border: 1px solid #ccc; 
+            margin: 0 auto; 
+            position: relative; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        
+        /* Restringimos el ancho del contenido izquierdo para evitar choques con la foto */
+        h1 { text-align: left; width: 65%; border-bottom: 2px solid #000; padding-bottom: 10px; margin-top: 0; }
+        h2 { border-bottom: 1px solid #000; padding-bottom: 5px; margin-top: 30px; color: #333; clear: both; }
+        
+        /* Diseño horizontal ordenado */
+        .row-inline { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; width: 65%; }
+        .row-inline label { font-weight: bold; min-width: 160px; text-align: left; }
+        .row-inline input, .row-inline select { flex: 1; padding: 8px; box-sizing: border-box; }
+        
+        .row { display: flex; flex-wrap: wrap; margin-bottom: 15px; }
+        .field { flex: 1; min-width: 250px; margin-right: 15px; margin-bottom: 10px; }
+        .field label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .field input[type="text"], .field input[type="date"], .field input[type="tel"], .field input[type="email"] { width: 100%; padding: 8px; box-sizing: border-box; }
+        textarea { width: 100%; height: 80px; padding: 8px; box-sizing: border-box; }
+        
+        /* Contenedor optimizado tamaño Carnet/Pasaporte */
+        .foto-contenedor { position: absolute; top: 2.54cm; right: 2.54cm; width: 150px; text-align: center; }
+        .foto-preview-box { width: 115px; height: 150px; border: 1px solid #000; background: #fafafa; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; margin: 0 auto 8px auto; }
+        .foto-preview-box img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .foto-placeholder { font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; color: #000; text-align: center; padding: 5px; line-height: 1.2; }
+        .btn-foto { width: 100%; font-size: 11px; }
+
+        /* Selector de Color Ampliado y Visible */
+        .color-field { display: flex; align-items: center; }
+        .color-field input[type="color"] { width: 120px; height: 38px; border: 1px solid #ccc; cursor: pointer; padding: 2px; background: #fff; }
+        
+        .btn-container { display: flex; gap: 15px; margin-top: 20px; }
+        .btn-submit { flex: 2; padding: 12px; background-color: #24292e; color: white; border: none; font-size: 16px; cursor: pointer; }
+        .btn-reset { flex: 1; padding: 12px; background-color: #cc0000; color: white; border: none; font-size: 16px; cursor: pointer; }
+        .btn-submit:hover { background-color: #555; }
+        .btn-reset:hover { background-color: #aa0000; }
+        .footer-text { margin-top: 25px; font-size: 13px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CURRICULUM VITAE</h1>
+
+    <form action="mailto:direccion@correo.com" method="post" enctype="multipart/form-data" onreset="clearFotoPreview()">
+        
+        <!-- Sección de Fotografía con tamaño ajustado -->
+        <div class="foto-contenedor">
+            <div class="foto-preview-box" id="previewBox">
+                <span class="foto-placeholder" id="placeholderText">FOTO DEL<br>POSTULANTE</span>
+                <img id="imgPreview" alt="Vista previa de la foto">
+            </div>
+            <input type="file" name="foto_usuario" id="fotoInput" accept="image/*" class="btn-foto" required onchange="previewImage(this)">
+        </div>
+
+        <h2>DATOS PERSONALES</h2>
+        
+        <div class="row-inline">
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" id="apellidos" name="apellidos" required>
+        </div>
+        
+        <div class="row-inline">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+        </div>
+        
+        <div class="row-inline">
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" name="dni" maxlength="9" required>
+        </div>
+
+        <div class="row-inline">
+            <label for="color_ref">Color de Referencia:</label>
+            <div class="color-field">
+                <input type="color" id="color_ref" name="color_preferido" value="#24292e">
+            </div>
+        </div>
+
+        <div class="row-inline">
+            <label for="fecha_nac">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha_nac" name="fecha_nac" required>
+        </div>
+
+        <div class="row-inline">
+            <label for="dep_nac">Departamento:</label>
+            <input type="text" id="dep_nac" name="departamento_nac" list="lista-departamentos" placeholder="Escriba su departamento..." required>
+        </div>
+
+        <div class="row-inline">
+            <label for="prov_nac">Provincia:</label>
+            <input type="text" id="prov_nac" name="provincia_nac" list="lista-provincias" placeholder="Escriba su provincia..." required>
+        </div>
+
+        <div class="row-inline">
+            <label for="dist_nac">Distrito (Lugar Nac.):</label>
+            <input type="text" id="dist_nac" name="distrito_nac" list="lista-distritos" placeholder="Escriba su distrito..." required>
+        </div>
+
+        <div class="row" style="width: 65%; margin-top: 15px;">
+            <div class="field"><label for="direccion">Dirección:</label><input type="text" id="direccion" name="direccion"></div>
+            <div class="field"><label for="localidad">Localidad:</label><input type="text" id="localidad" name="localidad"></div>
+        </div>
+        <div class="row">
+            <div class="field"><label for="telefono">Teléfono:</label><input type="tel" id="telefono" name="telefono"></div>
+            <div class="field"><label for="movil">Teléfono Móvil:</label><input type="tel" id="movil" name="movil"></div>
+            <div class="field"><label for="email">E-Mail:</label><input type="email" id="email" name="email" required></div>
+        </div>
+
+        <h2>FORMACION Y ESTUDIOS</h2>
+        <div class="row">
+            <div class="field">
+                <label for="estudios">Nivel de estudios alcanzado:</label>
+                <select id="estudios" name="nivel_estudios">
+                    <option value="1">Certificado escolar</option>
+                    <option value="2">Graduado en UPRIT</option>
+                    <option value="3">Bachiller - Formación Profesional</option>
+                    <option value="4">Diplomado</option>
+                    <option value="5">Licenciado o Doctorado</option>
+                </select>
+            </div>
+        </div>
+        <div class="row"><div class="field"><label for="titulacion">Titulación específica:</label><input type="text" id="titulacion" name="titulacion"></div></div>
+        <div class="row"><div class="field"><label for="idiomas">Idiomas:</label><input type="text" id="idiomas" name="idiomas"></div></div>
+        <div class="row"><div class="field"><label for="informatica">Conocimientos informáticos:</label><textarea id="informatica" name="informatica"></textarea></div></div>
+        <div class="row"><div class="field"><label for="cursos">Cursos y seminarios:</label><textarea id="cursos" name="cursos"></textarea></div></div>
+
+        <h2>EXPERIENCIA PROFESIONAL</h2>
+        <div class="row">
+            <div class="field"><label for="empresa">Empresa:</label><input type="text" id="empresa" name="empresa"></div>
+            <div class="field"><label for="fecha_exp">Periodo:</label><input type="text" id="fecha_exp" name="fecha_exp" placeholder="Mes/Año - Mes/Año"></div>
+        </div>
+        <div class="row"><div class="field"><label for="puesto">Puesto/Actividad desarrollada:</label><textarea id="puesto" name="puesto"></textarea></div></div>
+
+        <h2>DATOS COMPLEMENTARIOS</h2>
+        <div class="row"><div class="field"><label for="complementarios">Información adicional:</label><textarea id="complementarios" name="complementarios"></textarea></div></div>
+
+        <p class="footer-text">Todo lo expuesto anteriormente podrá ser acreditado, en caso de solicitud.</p>
+        
+        <div class="row">
+            <div class="field"><label for="lugar_actual">Lugar (Ciudad actual):</label><input type="text" id="lugar_actual" name="lugar_actual" required></div>
+            <div class="field"><label for="fecha_actual">Fecha actual (dd/mm/aaaa):</label><input type="date" id="fecha_actual" name="fecha_actual" required></div>
+        </div>
+
+        <div class="btn-container">
+            <input type="submit" class="btn-submit" value="Enviar por correo">
+            <input type="reset" class="btn-reset" value="Borrar todo">
+        </div>
+    </form>
+</div>
+
+<datalist id="lista-departamentos">
+    <option value="La Libertad">
+    <option value="Lima">
+    <option value="Arequipa">
+</datalist>
+
+<datalist id="lista-provincias">
+    <option value="Trujillo">
+    <option value="Pacasmayo">
+    <option value="Lima">
+</datalist>
+
+<datalist id="lista-distritos">
+    <option value="Trujillo">
+    <option value="Víctor Larco Herrera">
+    <option value="Huanchaco">
+</datalist>
+
+<script type="text/javascript" src="lector.js"></script>
+
+</body>
+</html>
